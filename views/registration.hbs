@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/reg.css">
+    <link rel="shortcut icon" href="/img/favicon.webp" type="image/x-icon">
+    <title>Регистрация</title>
+</head>
+<body>
+    <div class="wrapper wrapper--reg">
+        <main class="reg-main">
+            <form class="reg__form" name="formLog" action="/adduser" method="post">
+                <div class="logo">
+                    <div class="logo__img">
+                        <img src="/img/logo.webp" alt="" class="logo__img__icon">
+                    </div>
+                    <span class="logo__text">Librery</span>
+                </div>
+                <h3 class="reg__from__title">Регистрация</h3>
+                <span class="error-messange reg__from__error" id="error-messange">{{errorMessange}}</span>
+                <div class="reg__form__group">
+                    <label for="login">Придумайте логин:</label>
+                    <input type="text" class="input-def reg__from__input" id="login" name="login" placeholder="Введите логин">
+                </div>
+                <div class="reg__form__group">
+                    <label for="password">Придумайте пароль:</label>
+                    <input type="text" class="input-def reg__from__input" id="password" name="password" placeholder="Введите пароль">
+                </div>
+                <div class="reg__form__group">
+                    <label for="first-name">Укажите ваше имя:</label>
+                    <input type="text" class="input-def reg__from__input" id="first-name" name="firstName" placeholder="Введите имя">
+                </div>
+                <div class="reg__form__group">
+                    <label for="last-name">Укажите вашу фамилию:</label>
+                    <input type="text" class="input-def reg__from__input" id="last-name" name="lastName" placeholder="Введите фамилию">
+                </div>
+                <button class="btn-def reg__from__btn" name="btnLog" id="btn-reg">Создать</button>
+                <a href="/" class="link-reg">Авторизация</a>
+            </form>
+        </main>
+    </div>
+
+    <script src="/js/login.js"></script>
+</body>
+</html>

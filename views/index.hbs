@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/login.css">
+    <link rel="shortcut icon" href="/img/favicon.webp" type="image/x-icon">
+    <title>Авторизация</title>
+</head>
+<body>
+    <div class="wrapper wrapper--login">
+
+        <aside class="login-aside">
+
+           <div class="login-aside__container">
+                <div class="logo">
+                    <div class="logo__img">
+                        <img src="/img/logo.webp" alt="" class="logo__img__icon">
+                    </div>
+                    <span class="logo__text">Librery</span>
+                </div>
+                <form class="login-aside__form" action="/login" name="formLog" method="post">
+                    <h3 class="login-aside__from__title">Авторизация</h3>
+                    <span class="error-messange login__error-messange" id="error-messange">{{errorMessange}}</span>
+                    <input type="text" class="input-def login-aside__from__input" name="login" id="login" placeholder="Введите логин">
+                    <input type="text" class="input-def login-aside__from__input" name="password" id="password" placeholder="Введите пароль">
+                    <button class="btn-def login-aside__from__btn" name="btnLog" id="btn-login">Вход</button>
+                    <a href="/registration" class="link-reg">Регистрация</a>
+                </form>
+           </div>
+
+        </aside>
+
+        <main class="login-main"></main>
+
+    </div>
+    <script src="/js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+.login-main{
+    flex: 1 1 auto;
+
+    background: url('/img/bg-login.webp') no-repeat center center/cover;
+}
+
+.login-aside{
+    width: 440px;
+    height: 100%;
+
+    background-color: #fff;
+
+    position: relative;
+}
+
+.login-aside__container{
+    position: absolute;
+    top: 30%;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 328px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-aside__form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    width: 80%;
+
+    position: relative;
+}
+
+.login-aside__from__title{
+    font-size: 20px;
+    font-weight: 600;
+
+    margin-bottom: 45px;
+}
+
+.login-aside__from__input{
+    margin-bottom: 25px;
+}
+
+.login-aside__from__btn{
+    margin-bottom: 25px;
+}
+
+.login__error-messange{
+    position: absolute;
+    top: 12%;
+    left: 0;
+
+    width: 100%;
+
+    text-align: center;
+}

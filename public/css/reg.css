@@ -1,0 +1,49 @@
+.reg-main{
+    width: 450px;
+    height: 630px;
+
+    background-color: #fff;
+
+    border-radius: 20px;
+}
+
+.reg__form{
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+}
+
+.reg__from__title{
+    font-size: 20px;
+    font-weight: 600;
+
+    margin-bottom: 45px;
+}
+
+.reg__form__group{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    margin-bottom: 20px;
+
+    gap: 10px;
+}
+
+.reg__from__btn{
+    margin: 10px 0;
+}
+
+.reg__from__error{
+    position: absolute;
+    top: 28%;
+    left: 50%;
+
+    transform: translateX(-50%);
+}
