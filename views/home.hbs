@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="shortcut icon" href="/img/favicon.webp" type="image/x-icon">
+    <title>Главная</title>
+</head>
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <div class="header__contaner container">
+                <a href="/home" class="header__logo logo">
+                    <div class="header__logo__container">
+                        <div class="logo__img">
+                            <img src="/img/logo.webp" alt="" class="logo__img__icon">
+                        </div>
+                        <span class="header__logo__link logo__text">Librery</span>
+                    </div>
+                </a>
+                <a href="/profile" class="header__profile">
+                   <div class="header__profile__container">
+                        <span class="header__profile__text">{{firstName}} {{lastName}}</span>
+                        <div class="header__profile__img">
+                            <img src="{{pathImgProfile}}" alt="Аватар" class="header__profile__img__icon">
+                        </div>
+                   </div>
+                </a>
+            </div>
+        </header>
+        <main class="main container">
+            <nav class="nav-cards">
+                <div class="nav-cards__title" id="nav-cards-title"></div>
+                <div class="nav-cards__types">
+                    <select name="cardsListAuthor" id="cards-list-author" class="nav-cards__types__list">
+                            <option class="nav-cards__types__list__item" value="null">Автор</option>
+                        {{#each bookAuthor}}
+                            <option class="nav-cards__types__list__item" value="{{this}}">{{this}}</option>
+                        {{/each}}
+                    </select>
+                    <select name="cardsListCategory" id="cards-list-category" class="nav-cards__types__list">
+                            <option class="nav-cards__types__list__item" value="null">Категория</option>
+                        {{#each bookCategory}}
+                            <option class="nav-cards__types__list__item" value="{{this}}">{{this}}</option>
+                        {{/each}}
+                    </select>
+                    <select name="cardsListAge" id="cards-list-age" class="nav-cards__types__list">
+                            <option class="nav-cards__types__list__item" value="null">Год издания</option>
+                        {{#each bookAge}}
+                            <option class="nav-cards__types__list__item" value="{{this}}">{{this}}</option>
+                        {{/each}}
+                    </select>
+                    <button class="btn-def nav-cards__btn" id="btn-cards-search" type="button">Найти</button>
+                    <button class="btn-def nav-cards__btn" id="btn-cards-del" type="button">Сбросить</button>
+                </div>
+            </nav>
+
+            <section class="cards">
+                {{#each cards}}
+                   <form method="post" data-author="{{this.author}}" data-age="{{this.age}}" data-category="{{this.category}}" action="/getBookPage/{{this.id}}">
+                        <button name="btnGetBookPAge" class="cards__item">
+                            <div class="cards__item__img">
+                                <img class="cards__item__img__icon" src="{{this.pathImg}}" alt="Обложка книги">
+                            </div>
+                            <div class="cards__item__desk">
+                                <p class="cards__item__text">{{this.name}}</p>
+                                <p class="cards__item__text">{{this.author}}</p>
+                            </div>
+                        </button>
+                   </form>
+                {{/each}}
+            </section>
+        </main>
+        <footer class="footer">
+            <div class="container footer__container">
+                <span class="footer__text">Сайт разработан в образовательных целях</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="/js/home.js"></script>
+</body>
+</html>

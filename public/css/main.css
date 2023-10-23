@@ -8,12 +8,15 @@
 
 .wrapper{
     display: flex;
+    flex-direction: column;
     
     width: 100%;
-    height: 100%;
+    min-height: 100%;
 }
 
 .wrapper--login{
+    flex-direction: row;
+    
     width: 100dvw;
     height: 100dvh;
 }
@@ -24,6 +27,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.container{
+    width: 1640px;
+    height: 100%;
+
+    padding: 0 15px;
+
+    margin: 0 auto;
 }
 
 .btn-def{
@@ -95,6 +107,8 @@
     gap: 10px;
 
     margin-bottom: 65px;
+
+    cursor: default;
 }
 
 .logo__img{
@@ -112,6 +126,8 @@
 .logo__text{
     font-size: 36px;
     font-weight: 600;
+
+    color: #000;
 }
 
 .error-messange{
@@ -119,5 +135,131 @@
     
     font-size: 18px;
     font-weight: 600;
+}
 
+.header{
+    width: 100%;
+    height: 80px;
+
+    background-color: #C78853;
+}
+
+.header__contaner{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+    justify-self: flex-end;
+}
+
+.header__logo{
+    margin-bottom: 0;
+
+    flex-basis: 50%;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.header__logo__container{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    cursor: pointer;
+}
+
+.header__logo__link{
+    color: #fff;
+    transition: all .7s ease;
+
+}
+
+.header__logo__container:hover{
+    .header__logo__link{
+        transition: all .7s ease;
+        color: #4a94f6;
+    }
+}
+
+.header__profile{
+    flex-basis: 50%;
+    display: flex;
+    justify-content: flex-end;
+
+    align-items: center;
+
+    cursor: default;
+
+}
+
+.header__profile__text{
+    font-size: 20px;
+
+    color: #fff;
+
+    margin-right: 10px;
+
+    transition: all .7s ease;
+
+    text-decoration: underline;
+}
+
+.header__profile__img{
+    width: 53px;
+    height: 53px;
+}
+
+.header__profile__img__icon{
+    width: 100%;
+    height: 100%;
+    
+    border-radius: 50%;
+    
+    transition: all .7s ease;
+}
+
+.header__profile__container{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    cursor: pointer;
+}
+
+.header__profile__container:hover{
+
+    .header__profile__text{
+        transition: all .7s ease;
+
+        color: #9ec1ee;
+    }
+
+    .header__profile__img__icon{
+        transition: all .7s ease;
+
+        box-shadow: 0 0 30px #4a94f6;
+    }
+}
+
+.main{
+    flex: 1 1 auto;
+}
+
+.footer{
+    width: 100%;
+    height: 60px;
+
+    background-color: #363636;
+}
+
+.footer__text{
+    font-size: 15px;
+
+    color: #fff;
+}
+
+.footer__container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
