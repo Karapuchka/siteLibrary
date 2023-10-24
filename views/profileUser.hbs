@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/profile.css">
     <link rel="shortcut icon" href="/img/favicon.webp" type="image/x-icon">
     <title>Профиль</title>
 </head>
@@ -29,7 +30,35 @@
                 </a>
             </div>
         </header>
-        <main class="main"></main>
+        <main class="main container profile">
+            <form action="/getInfoUser" method="post" enctype="multipart/form-data" class="profile__info">
+                <div class="profile__info__img">
+                    <img src="{{profileImg}}" alt="Иконка пользователя" class="profile__info__img__icon">
+                </div>
+                <div class="profile__info__group">
+                    <label for="input-first-name" class="profile__info__label">Имя:</label>
+                    <input type="text" name="userFirstName" class="profile__info__input" id="input-first-name" value="{{firstName}}" placeholder="{{firstName}}">
+                </div>
+                <div class="profile__info__group">
+                    <label for="input-last-name" class="profile__info__label">Фамилия:</label>
+                    <input type="text" name="userLastName" class="profile__info__input" id="input-last-name" value="{{lastName}}" placeholder="{{lastName}}">
+                </div>
+                <div class="profile__info__group">
+                    <label for="input-login" class="profile__info__label">Логин:</label>
+                    <input type="text" name="userLogin" class="profile__info__input" id="input-login" value="{{login}}" placeholder="{{login}}">
+                </div>
+                 <div class="profile__info__group">
+                    <label for="input-password" class="profile__info__label">Пароль:</label>
+                    <input type="text" name="userPassword" class="profile__info__input" id="input-password" value="{{password}}" placeholder="{{password}}">
+                </div>
+                <div class="profile__info__group">
+                    <label for="input-password" class="profile__info__label">Аватар:</label>
+                    <input type="file" name="userImg" class="profile__info__input profile__info__input--size-18" value="{{profileImg}}" id="input-img">
+                </div>
+                <button type="submit" class="btn-def" id="btn-update">Изменить</button>
+            </form>
+            <section class="profile__table"></section>
+        </main>
         <footer class="footer">
             <div class="container footer__container">
                 <span class="footer__text">Сайт разработан в образовательных целях</span>

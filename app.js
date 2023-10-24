@@ -22,14 +22,25 @@ const urlcodedParsers = express.urlencoded({extended: false});
 //Настройка storage config. 
 const storageConfig = multer.diskStorage({
     destination: (req, file, cd)=>{
-        cd(null, 'source'); //Путь сохранения
+        cd(null, 'public/img/profile'); //Путь сохранения
     },
     filename: (req, file, cd)=>{
         cd(null, file.originalname); //Имя файла
     }
-})
+});
 
-const upload = multer({storage: storageConfig});
+const fileFilter = (req, file, cd)=>{
+    if(file.mimetype === 'image/png' ||
+       file.mimetype === 'image/jpg' ||
+       file.minetype === 'image/webp' ||
+       file.mimetype === 'image/jpeg'){
+        cd(null, true);
+    } else {
+        cd(null, false);
+    }
+}
+
+const upload = multer({storage: storageConfig,  fileFilter: fileFilter});
 
 //Указание пути к файлом hbs
 app.use(express.static(path.join(fs.realpathSync('.') + '/public')));
@@ -138,22 +149,71 @@ app.get('/home', (_, res)=>{
 })
 
 app.get('/profile', (_, res)=>{
+    let dataRent = new Date();
+
+    console.log(`${dataRent.getDate()}.${dataRent.getMonth() + 1 + 3}.${dataRent.getFullYear()}`);
 
     if(user.status) return res.render('profileAdmin.hbs', {
         firstName: user.firstName,
         lastName: user.lastName,
         pathImgProfile: user.pathImg,
+
     });
     else return res.render('profileUser.hbs', {
         firstName: user.firstName,
         lastName: user.lastName,
         pathImgProfile: user.pathImg,
+        profileImg: user.pathImg,
+        login: user.login,
+        password: user.password,
+        
     });
 });
 
-/* app.post('/upload', upload.single('uploads'), (req, res)=>{
+app.post('/getInfoUser', upload.single('userImg'), urlcodedParsers, (req, res)=>{
+    if(!req.body) return res.statusCode(400);
+
+    let sourceRequest, sqlRequest; 
+    if(typeof req.file === 'undefined') {
+        sourceRequest = [req.body.userLogin, req.body.userPassword, req.body.userFirstName, req.body.userLastName, user.id]
+        sqlRequest = 'UPDATE users SET login=?, password=?, firstName=?, lastname=? WHERE id=?'
+    }else{
+        sourceRequest = [req.body.userLogin, req.body.userPassword, req.body.userFirstName, req.body.userLastName, '/img/profile/' + req.file.filename, user.id]
+        sqlRequest = 'UPDATE users SET login=?, password=?, firstName=?, lastname=?, pathImg=? WHERE id=?'
+    } 
+
+    pool.query(sqlRequest, sourceRequest, (err, data)=>{
+        if(err) return console.log(err);       
+    });
+
+    pool.query('SELECT * FROM users', (err, data)=>{
+        if(err) return console.log(err);
+
+        let id = user.id;
+        user = simpleSearch(data, 'id', id);
+
+
+        if(user.status) return res.render('profileAdmin.hbs', {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            pathImgProfile: user.pathImg,
+
+        });
+        else return res.render('profileUser.hbs', {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            pathImgProfile: user.pathImg,
+            profileImg: user.pathImg,
+            login: user.login,
+            password: user.password,
+            
+        });
+    });
+});
+
+app.post('/upload', upload.single('uploads'), (req, res)=>{
     res.send("Файл загружен");
-}) */
+})
 
 app.listen(3000, ()=>{
     console.log('Server start! URL: http://localhost:3000/');
