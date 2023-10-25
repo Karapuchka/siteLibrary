@@ -151,23 +151,40 @@ app.get('/home', (_, res)=>{
 app.get('/profile', (_, res)=>{
     let dataRent = new Date();
 
-    console.log(`${dataRent.getDate()}.${dataRent.getMonth() + 1 + 3}.${dataRent.getFullYear()}`);
+    pool.query('SELECT * FROM usersbooklist', (err, data)=>{
+        if(err) return console.log(err);
 
-    if(user.status) return res.render('profileAdmin.hbs', {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        pathImgProfile: user.pathImg,
+        let listBook = [];
 
-    });
-    else return res.render('profileUser.hbs', {
-        firstName: user.firstName,
-        lastName: user.lastName,
-        pathImgProfile: user.pathImg,
-        profileImg: user.pathImg,
-        login: user.login,
-        password: user.password,
-        
-    });
+        for (let i = 0; i < data.length; i++) {
+            if(user.id == data[i].idUser) {
+                listBook.push({
+                    id: data[i].id,
+                    name: data[i].bookName,
+                    status: (data[i].status == 'true') ? 'Куплено' : `${data[i].rentEnd}`,
+                    rentStart: (data[i].status == 'false') ? 'none' : data[i].rentStart,
+                });    
+            }
+            
+
+        }
+
+        if(user.status) return res.render('profileAdmin.hbs', {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            pathImgProfile: user.pathImg,
+
+        });
+        else return res.render('profileUser.hbs', {
+            firstName: user.firstName,
+            lastName: user.lastName,
+            pathImgProfile: user.pathImg,
+            profileImg: user.pathImg,
+            login: user.login,
+            password: user.password,
+            tableBook: listBook,
+        });
+    })
 });
 
 app.post('/getInfoUser', upload.single('userImg'), urlcodedParsers, (req, res)=>{
@@ -191,7 +208,21 @@ app.post('/getInfoUser', upload.single('userImg'), urlcodedParsers, (req, res)=>
 
         let id = user.id;
         user = simpleSearch(data, 'id', id);
+    });
 
+    pool.query('SELECT * FROM usersbooklist', (err, data)=>{
+        if(err) return console.log(err);
+
+        let listBook = [];
+
+        for (let i = 0; i < data.length; i++) {
+            if(user.id == data[i].idUser)  listBook.push({
+                id: data[i].id,
+                name: data[i].bookName,
+                status: (data[i].status == 'true') ? 'Куплено' : `${data[i].rentEnd}`,
+                rentStart: (data[i].status == 'false') ? 'none' : data[i].rentStart,
+            });    
+        }
 
         if(user.status) return res.render('profileAdmin.hbs', {
             firstName: user.firstName,
@@ -206,9 +237,9 @@ app.post('/getInfoUser', upload.single('userImg'), urlcodedParsers, (req, res)=>
             profileImg: user.pathImg,
             login: user.login,
             password: user.password,
-            
+            tableBook: listBook,
         });
-    });
+    })
 });
 
 app.post('/upload', upload.single('uploads'), (req, res)=>{

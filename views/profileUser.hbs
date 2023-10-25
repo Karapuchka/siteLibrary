@@ -57,7 +57,22 @@
                 </div>
                 <button type="submit" class="btn-def" id="btn-update">Изменить</button>
             </form>
-            <section class="profile__table"></section>
+            <section class="profile__table">
+                <div class="profile__table__list">
+                    <div class="profile__table__list__item profile__table__list__item--title">
+                        <div class="profile__table__list__title__text profile__table__list__title__text--big">Наименование</div>
+                        <div class="profile__table__list__title__text">Статус</div>
+                    </div>
+                    {{#each tableBook}}
+                        <form method="post" action="/getBookPage/{{this.id}}" data-rentStart="{{this.rentStart}}">
+                            <button class="profile__table__list__item" name="getBook">
+                                <div class="profile__table__list__item__text profile__table__list__item__text--big">{{this.name}}</div>
+                                <div class="profile__table__list__item__text">{{this.status}}</div>
+                            </button>
+                        </form>
+                    {{/each}}
+                </div>
+            </section>
         </main>
         <footer class="footer">
             <div class="container footer__container">

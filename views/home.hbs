@@ -59,13 +59,13 @@
 
             <section class="cards">
                 {{#each cards}}
-                   <form method="post" data-author="{{this.author}}" data-age="{{this.age}}" data-category="{{this.category}}" action="/getBookPage/{{this.id}}">
+                   <form method="post" action="/getBookPage/{{this.id}}">
                         <button name="btnGetBookPAge" class="cards__item">
                             <div class="cards__item__img">
                                 <img class="cards__item__img__icon" src="{{this.pathImg}}" alt="Обложка книги">
                             </div>
                             <div class="cards__item__desk">
-                                <p class="cards__item__text">{{this.name}}</p>
+                                <p class="cards__item__text">Арендовано до: {{this.name}}</p>
                                 <p class="cards__item__text">{{this.author}}</p>
                             </div>
                         </button>

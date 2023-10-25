@@ -67,5 +67,70 @@
 .profile__table{
     flex: 1 1 auto;
 
+}
+
+.profile__table__list{
+    width: 100%;
+}
+
+.profile__table__list__item{
+    height: 50px;
+    width: 100%;
+
+    text-align: left;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    padding: 0 20px;
+
     border: 1px solid gray;
+}
+
+.profile__table__list__item--title{
+    background-color: #565656;
+}
+
+.profile__table__list__title__text{
+    font-size: 24px;
+
+    color: #fff;
+}
+
+.profile__table__list__item__text{
+    font-size: 20px;
+}
+
+.profile__table__list__item__text, .profile__table__list__title__text{
+
+    display: flex;
+    align-items: center;
+
+    height: 60%;
+    width: 150px;
+
+    border-left: 1px solid rgb(0, 0, 0);
+
+    padding: 0 10px;
+}
+
+.profile__table__list__title__text{
+    border-left: 1px solid rgb(255, 255, 255);
+}
+
+.profile__table__list__title__text--big, .profile__table__list__item__text--big{
+    flex: 1 1 auto;
+
+    border: none;
+
+    padding: 0;
+}
+
+.profile__table__list__item:hover{
+    background-color: rgb(249, 247, 118);
+}
+
+.profile__table__list__item--title:hover{
+    background-color: #565656;
 }
