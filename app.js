@@ -8,6 +8,10 @@ const app = express();
 
 let user;
 
+let date = new Date();
+
+let curDate = `${date.getDate()}.${date.getMonth() + 1}.${date.getFullYear()}`;
+
 //Подключение к бд
 const pool = mysql.createPool({
     connectionLimit: 10,
@@ -113,6 +117,25 @@ app.post('/login', urlcodedParsers, (req, res)=>{
 app.post('/getBookPage/:id=?', urlcodedParsers, (req, res)=>{
     if(!req.body) return res.statusCode(400);
 
+    let bookDesk= {
+        pay: false,
+        rent: false,
+        rentEnd: false,
+    }
+
+    pool.query('SELECT * FROM usersbooklist', (err, data)=>{
+        if(err) return console.log(err);
+
+        for (let i = 0; i < data.length; i++) {
+            if(data[i].idBook == req.params.id){
+                bookDesk = {
+                    pay: data[i].status,
+                    rent: (data[i].rentStart != 'none') ? true : false,
+                }
+            }            
+        }
+    });
+
     pool.query('SELECT * FROM cards', (err, data)=>{
         if(err) console.log(err);
 
@@ -124,7 +147,35 @@ app.post('/getBookPage/:id=?', urlcodedParsers, (req, res)=>{
                 break;
             }            
         }
-        res.send(book);
+
+        if(user.status){
+            res.render('bookDeskAdmin.hbs');
+        } else {
+/* 
+            let text = fs.readFileSync(`${fs.realpathSync('.')}/public/${book.pathText}`, 'utf-8', (err, data)=>{
+                if(err) return console.log(err);
+
+                return data;
+                
+            });
+
+            text = text.split('\r\n'); */
+
+            res.render('bookDeskUser.hbs', {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                pathImgProfile: user.pathImg,
+                payVisible: !bookDesk.pay,
+                rent: bookDesk.rent,
+                coverBook: book.pathImg,
+                bookName: book.name,
+                bookAuthor: book.author,
+                bookAge: book.age,
+                bookCategory: book.category,
+                bookDesk: book.desk,
+            });
+        }
+
     })
 });
 
@@ -149,7 +200,6 @@ app.get('/home', (_, res)=>{
 })
 
 app.get('/profile', (_, res)=>{
-    let dataRent = new Date();
 
     pool.query('SELECT * FROM usersbooklist', (err, data)=>{
         if(err) return console.log(err);
@@ -157,16 +207,16 @@ app.get('/profile', (_, res)=>{
         let listBook = [];
 
         for (let i = 0; i < data.length; i++) {
-            if(user.id == data[i].idUser) {
-                listBook.push({
-                    id: data[i].id,
-                    name: data[i].bookName,
-                    status: (data[i].status == 'true') ? 'Куплено' : `${data[i].rentEnd}`,
-                    rentStart: (data[i].status == 'false') ? 'none' : data[i].rentStart,
-                });    
+            if(curDate == data[i].rentEnd){ // Проверка: если дата окончания аренды совападает с текущей, то удаляем книгу из списка
+                pool.query('DELETE FROM usersbooklist WHERE id=?', [data[i].id], err => {if(err) return console.log(err);})
             }
-            
 
+            if(user.id == data[i].idUser && curDate != data[i].rentEnd)  listBook.push({
+                id: data[i].id,
+                name: data[i].bookName,
+                status: (data[i].status == 'true') ? 'Куплено' : `${data[i].rentEnd}`,
+                rentStart: (data[i].status == 'false') ? 'none' : data[i].rentStart,
+            });    
         }
 
         if(user.status) return res.render('profileAdmin.hbs', {
@@ -191,10 +241,10 @@ app.post('/getInfoUser', upload.single('userImg'), urlcodedParsers, (req, res)=>
     if(!req.body) return res.statusCode(400);
 
     let sourceRequest, sqlRequest; 
-    if(typeof req.file === 'undefined') {
+    if(typeof req.file === 'undefined') { // Если пользователь изменяет данные о себе, но не меняет аватар
         sourceRequest = [req.body.userLogin, req.body.userPassword, req.body.userFirstName, req.body.userLastName, user.id]
         sqlRequest = 'UPDATE users SET login=?, password=?, firstName=?, lastname=? WHERE id=?'
-    }else{
+    }else{// Если пользователь изменяет данные о себе и аватар
         sourceRequest = [req.body.userLogin, req.body.userPassword, req.body.userFirstName, req.body.userLastName, '/img/profile/' + req.file.filename, user.id]
         sqlRequest = 'UPDATE users SET login=?, password=?, firstName=?, lastname=?, pathImg=? WHERE id=?'
     } 
@@ -216,7 +266,12 @@ app.post('/getInfoUser', upload.single('userImg'), urlcodedParsers, (req, res)=>
         let listBook = [];
 
         for (let i = 0; i < data.length; i++) {
-            if(user.id == data[i].idUser)  listBook.push({
+
+            if(curDate == data[i].rentEnd){// Проверка: если дата окончания аренды совападает с текущей, то удаляем книгу из списка
+                pool.query('DELETE FROM usersbooklist WHERE id=?', [data[i].id], err => {if(err) return console.log(err);})
+            }
+
+            if(user.id == data[i].idUser && curDate != data[i].rentEnd)  listBook.push({
                 id: data[i].id,
                 name: data[i].bookName,
                 status: (data[i].status == 'true') ? 'Куплено' : `${data[i].rentEnd}`,
@@ -239,7 +294,8 @@ app.post('/getInfoUser', upload.single('userImg'), urlcodedParsers, (req, res)=>
             password: user.password,
             tableBook: listBook,
         });
-    })
+    });
+
 });
 
 app.post('/upload', upload.single('uploads'), (req, res)=>{

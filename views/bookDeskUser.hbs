@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/bookDesk.css">
     <link rel="shortcut icon" href="/img/favicon.webp" type="image/x-icon">
     <title>Книга {{bookName}}</title>
 </head>
@@ -25,7 +26,37 @@
                 </div>
             </div>
         </header>
-        <main class="main"></main>
+        <main class="main container">
+            <div class="book-desk">
+                <aside class="book-desk__aside">
+                    <div class="book-desk__aside__cover">
+                        <img src="{{coverBook}}" alt="Обложка книги" class="book-desk__aside__cover__img">
+                    </div>
+                    {{#if payVisible}}
+                        <form action="/payBook" class="book-desk__aside__cover__form">
+                            <button class="btn-shop" type="submit">Купить</button>
+                            <button class="btn-shop btn-shop--rent" type="button">Арендовать</button>
+                        </form>
+                    {{else}}
+                        <form action="/oprnBook" class="book-desk__aside__cover__form">
+                            {{#if rent}}
+                                <button class="btn-shop btn-shop--rent" type="button">Арендовать</button>
+                            {{/if}}
+                            <button class="btn-shop btn-shop--open" type="submit">Читать</button>
+                        </form>
+                    {{/if}}
+                </aside>
+                <ul class="book-desk__list">
+                    <li class="book-desk__list__item"><h2 class="book-desk__list__item__title">Информация о книге</h2></li>
+                    <li class="book-desk__list__item">Название: {{bookName}}</li>
+                    <li class="book-desk__list__item">Автор: {{bookAuthor}}</li>
+                    <li class="book-desk__list__item">Год: {{bookAge}}</li>
+                    <li class="book-desk__list__item">Категория: {{bookCategory}}</li>
+                    <li class="book-desk__list__item book-desk__list__item--big"><b>Описание:</b> {{bookDesk}}
+                    </li>
+                </ul>
+            </div>
+        </main>
         <footer class="footer">
             <div class="container footer__container">
                 <span class="footer__text">Сайт разработан в образовательных целях</span>

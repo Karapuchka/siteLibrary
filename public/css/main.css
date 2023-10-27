@@ -64,6 +64,49 @@
     background-color: #E4B200;
 }
 
+.btn-shop{
+    width: 300px;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 24px;
+
+    background-color: #05E400;
+
+    border: 1px solid black;
+    transition: all .7s ease;
+}
+
+.btn-shop:hover{
+    background-color: #0b9609;
+
+    transition: all .7s ease;
+}
+
+.btn-shop--rent{
+    background-color: #E4B200;
+    transition: all .7s ease;
+}
+
+.btn-shop--rent:hover{
+    background-color: #b08b06;
+    transition: all .7s ease;
+}
+
+.btn-shop--open{
+    background-color: #ffffff;
+    transition: all .7s ease;
+}
+
+.btn-shop--open:hover{
+    background-color: #c4c4c4;
+    transition: all .7s ease;
+}
+
+
 .input-def{
     width: 320px;
 
