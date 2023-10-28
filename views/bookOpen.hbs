@@ -25,7 +25,13 @@
                 </div>
             </div>
         </header>
-        <main class="main"></main>
+        <main class="main container">
+            <div class="book-container">
+                {{#each book}}
+                    <p class="book-text">{{this}}</p>
+                {{/each}}
+            </div>
+        </main>
         <footer class="footer">
             <div class="container footer__container">
                 <span class="footer__text">Сайт разработан в образовательных целях</span>

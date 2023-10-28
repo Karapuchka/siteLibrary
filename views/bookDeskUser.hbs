@@ -33,14 +33,14 @@
                         <img src="{{coverBook}}" alt="Обложка книги" class="book-desk__aside__cover__img">
                     </div>
                     {{#if payVisible}}
-                        <form action="/payBook" class="book-desk__aside__cover__form">
-                            <button class="btn-shop" type="submit">Купить</button>
-                            <button class="btn-shop btn-shop--rent" type="button">Арендовать</button>
+                        <form action="/payBook/{{bookId}}" method="post" class="book-desk__aside__cover__form">
+                            <button class="btn-shop" type="submit" id="btn-pay">Купить</button>
+                            <button class="btn-shop btn-shop--rent" id="btn-rent" type="button">Арендовать</button>
                         </form>
                     {{else}}
-                        <form action="/oprnBook" class="book-desk__aside__cover__form">
+                        <form action="/openBook/{{bookId}}" class="book-desk__aside__cover__form">
                             {{#if rent}}
-                                <button class="btn-shop btn-shop--rent" type="button">Арендовать</button>
+                                <button class="btn-shop btn-shop--rent" id="btn-rent" type="button">Продлить аренду</button>
                             {{/if}}
                             <button class="btn-shop btn-shop--open" type="submit">Читать</button>
                         </form>
@@ -62,6 +62,32 @@
                 <span class="footer__text">Сайт разработан в образовательных целях</span>
             </div>
         </footer>
+
+        <div class="modal-rent">
+           <div class="modal-rent__container">
+                <h3 class="modal-rent__title">Арендовать</h3>
+                <div class="modal-rent__form">
+                    <form action="/rentBook/:{{bookId}}"  method="post" >
+                        <input type="text" name="rent" value="oneWeek" style="display: none;">
+                        <input type="text" name="bookName" value="{{bookName}}" style="display: none;">
+                        <button class="btn-shop modal-rent__btn-one-week" type="submit">1 неделя</button>
+                    </form>
+                    <form action="/rentBook/{{bookId}}"  method="post" >
+                        <input type="text" name="rent" value="oneMonth" style="display: none;">
+                        <input type="text" name="bookName" value="{{bookName}}" style="display: none;">
+                        <button class="btn-shop modal-rent__btn-one-month" type="submit">1 месяц</button>
+                    </form>
+                    <form action="/rentBook/{{bookId}}"  method="post" >
+                        <input type="text" name="rent" value="treeMonth" style="display: none;">
+                        <input type="text" name="bookName" value="{{bookName}}" style="display: none;">
+                        <button class="btn-shop modal-rent__btn-tree-month" type="submit">3 месяца</button>
+                    </form>
+                </div>
+                <button class="btn-shop modal-rent__btn-cancel" id="btn-cancel" type="button">Отмена</button>
+           </div>
+        </div>
     </div>
+
+    <script src="/js/bookDesk.js"></script>
 </body>
 </html>

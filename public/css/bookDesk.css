@@ -55,3 +55,82 @@
     font-weight: 700;
     font-size: 24px;
 }
+
+.modal-rent{
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100dvw;
+    height: 100dvh;
+
+    background-color: rgba(0, 0, 0, .7);
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-rent__container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+
+    background-color: #fff;
+    border: 1px solid black;
+
+    width: 500px;
+    height: 550px;
+}
+
+.modal-rent__title{
+    font-size: 32px;
+}
+
+.modal-rent__form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 35px;
+}
+
+.modal-rent__btn-cancel{
+    background-color: #D9D9D9;
+    transition: all .7s ease;
+}
+
+.modal-rent__btn-one-week{
+    background-color: #F0AC5B;
+    transition: all .7s ease;
+}
+
+.modal-rent__btn-one-month{
+    background-color: #E5D756;
+    transition: all .7s ease;
+}
+
+.modal-rent__btn-tree-month{
+    background-color: #5EF05B;
+    transition: all .7s ease;
+}
+
+.modal-rent__btn-cancel:hover{
+    background-color: #a8a7a7;
+    transition: all .7s ease;
+}
+
+.modal-rent__btn-one-week:hover{
+    background-color: #c18a47;
+    transition: all .7s ease;
+}
+
+.modal-rent__btn-one-month:hover{
+    background-color: #cebf3c;
+    transition: all .7s ease;
+}
+
+.modal-rent__btn-tree-month:hover{
+    background-color: #48ba46;
+    transition: all .7s ease;
+}
