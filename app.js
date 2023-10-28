@@ -23,17 +23,17 @@ const pool = mysql.createPool({
 //Создание парсера
 const urlcodedParsers = express.urlencoded({extended: false});
 
-//Настройка storage config. 
-const storageConfig = multer.diskStorage({
-    destination: (req, file, cd)=>{
+//Настройка storage config для img. 
+const storageConfigImg = multer.diskStorage({
+    destination: (_, _, cd)=>{
         cd(null, 'public/img/profile'); //Путь сохранения
     },
-    filename: (req, file, cd)=>{
+    filename: (_, file, cd)=>{
         cd(null, file.originalname); //Имя файла
     }
 });
 
-const fileFilter = (req, file, cd)=>{
+const fileFilterImg = (_, file, cd)=>{
     if(file.mimetype === 'image/png' ||
        file.mimetype === 'image/jpg' ||
        file.minetype === 'image/webp' ||
@@ -44,7 +44,19 @@ const fileFilter = (req, file, cd)=>{
     }
 }
 
-const upload = multer({storage: storageConfig,  fileFilter: fileFilter});
+// Настройка storage config для txt
+
+const storageConfigTxt = multer.diskStorage({
+    destination: (_, _, cd)=>{
+        cd(null, 'public/pdf')
+    },
+    filename: (_, file, cd)=>{
+        cd(null, file.originalname);
+    }
+})
+
+const uploadImg = multer({storage: storageConfigImg,  fileFilter: fileFilterImg});
+const uploadTxt = multer({storage: storageConfigTxt});
 
 //Указание пути к файлом hbs
 app.use(express.static(path.join(fs.realpathSync('.') + '/public')));
@@ -238,7 +250,7 @@ app.get('/profile', (_, res)=>{
     })
 });
 
-app.post('/getInfoUser', upload.single('userImg'), urlcodedParsers, (req, res)=>{
+app.post('/getInfoUser', uploadImg.single('userImg'), urlcodedParsers, (req, res)=>{
     if(!req.body) return res.statusCode(400);
 
     let sourceRequest, sqlRequest; 
@@ -368,6 +380,14 @@ app.get('/openBook/:id', urlcodedParsers, (req, res)=>{
 
     }); 
 });
+
+app.post('/setFileBook/:id', uploadImg.array(), urlcodedParsers, (req, res)=>{
+    if(!req.body) return res.sendStatus(400);
+
+    pool.query('UPDATE cards SET pathText=?, pathImg=? WHERE id=?', [req.body.pathText, req.body.pathImg, req.params.id], (err)=>{
+        if(err) return console.log(err);
+    })
+})
 
 app.listen(3000, ()=>{
     console.log('Server start! URL: http://localhost:3000/');

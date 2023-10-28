@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/bookDesk.css">
     <link rel="shortcut icon" href="/img/favicon.webp" type="image/x-icon">
     <title>Редактирование книги</title>
 </head>
@@ -25,7 +26,51 @@
                 </div>
             </div>
         </header>
-        <main class="main"></main>
+        <main class="main container">
+             <div class="book-desk">
+                <aside class="book-desk__aside">
+                    <div class="book-desk__aside__cover">
+                        <img src="{{coverBook}}" alt="Обложка книги" class="book-desk__aside__cover__img">
+                    </div>
+                   <form class="book-desk__aside__form" enctype="multipart/form-data" action="/setFileBook/{{bookId}}" method="post">
+                        <div class="book-desk__aside__form__item">
+                            <label class="book-desk__aside__form__item__title" for="nameBook">Изображение: </label>
+                            <input type="file" id="nameBook" name="nameBook" class="book-desk__list__item__input" />{{bookName}}</input>
+                        </div>
+
+                        <div class="book-desk__aside__form__item">
+                            <label class="book-desk__aside__form__item__title" for="nameBook">Файл .txt: </label>
+                            <input type="file" id="nameBook" name="nameBook" class="book-desk__list__item__input" />{{bookName}}</input>
+                        </div>
+
+                        <button class="btn-def" type="submit">Изменить</button>
+                   </form>
+                </aside>
+                <from action="/setInfoBook/{{bookId}}" method="post" class="book-desk__list">
+                    <p class="book-desk__list__item"><h2 class="book-desk__list__item__title">Информация о книге</h2> <button class="btn-def" type="submit">Изменить</button></p>
+                    <div class="book-desk__list__item book-desk__list__item--double">
+                        <label for="nameBook">Название: </label>
+                        <input type="text" id="nameBook" name="nameBook" class="book-desk__list__item__input" />{{bookName}}</input>
+                    </div>
+                    <div class="book-desk__list__item book-desk__list__item--double">
+                        <label for="authorBook">Автор: </label>
+                        <input type="text" id="authorBook" name="authorBook" class="book-desk__list__item__input" />{{bookAuthor}}</input>
+                    </div>
+                    <div class="book-desk__list__item book-desk__list__item--double">
+                        <label for="ageBook">Год: </label>
+                        <input type="text" id="ageBook" name="ageBook" class="book-desk__list__item__input" />{{bookAge}}</input>
+                    </div>
+                    <div class="book-desk__list__item book-desk__list__item--double">
+                        <label for="categoryBook">Категория: </label>
+                        <input type="text" id="categoryBook" name="categoryBook" class="book-desk__list__item__input" />{{bookCategory}}</input>
+                    </div>
+                    <div class="book-desk__list__item book-desk__list__item--double">
+                        <label for="deakBook">Описание: </label>
+                        <input type="text" id="deakBook" name="deakBook" class="book-desk__list__item__input" />{{bookDesk}}</input>
+                    </div>
+                </from>
+            </div>
+        </main>
         <footer class="footer">
             <div class="container footer__container">
                 <span class="footer__text">Сайт разработан в образовательных целях</span>
