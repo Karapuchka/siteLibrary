@@ -25,10 +25,10 @@ const urlcodedParsers = express.urlencoded({extended: false});
 
 //Настройка storage config для img. 
 const storageConfigImg = multer.diskStorage({
-    destination: (_, _, cd)=>{
+    destination: (req, file, cd)=>{
         cd(null, 'public/img/profile'); //Путь сохранения
     },
-    filename: (_, file, cd)=>{
+    filename: (req, file, cd)=>{
         cd(null, file.originalname); //Имя файла
     }
 });
@@ -44,19 +44,30 @@ const fileFilterImg = (_, file, cd)=>{
     }
 }
 
+//Настройка storage config для img. 
+const storageConfigImgBook = multer.diskStorage({
+    destination: (req, file, cd)=>{
+        cd(null, 'public/img/cards'); //Путь сохранения
+    },
+    filename: (req, file, cd)=>{
+        cd(null, file.originalname); //Имя файла
+    }
+});
+
 // Настройка storage config для txt
 
 const storageConfigTxt = multer.diskStorage({
-    destination: (_, _, cd)=>{
+    destination: (req, file, cd)=>{
         cd(null, 'public/pdf')
     },
-    filename: (_, file, cd)=>{
+    filename: (req, file, cd)=>{
         cd(null, file.originalname);
     }
 })
 
 const uploadImg = multer({storage: storageConfigImg,  fileFilter: fileFilterImg});
 const uploadTxt = multer({storage: storageConfigTxt});
+const uploadBook = multer({storage: storageConfigImgBook});
 
 //Указание пути к файлом hbs
 app.use(express.static(path.join(fs.realpathSync('.') + '/public')));
@@ -161,17 +172,19 @@ app.post('/getBookPage/:id=?', urlcodedParsers, (req, res)=>{
         }
 
         if(user.status){
-            res.render('bookDeskAdmin.hbs');
-        } else {
-/* 
-            let text = fs.readFileSync(`${fs.realpathSync('.')}/public/${book.pathText}`, 'utf-8', (err, data)=>{
-                if(err) return console.log(err);
-
-                return data;
-                
+            res.render('bookDeskAdmin.hbs', {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                pathImgProfile: user.pathImg,
+                coverBook: book.pathImg,
+                bookName: book.name,
+                bookAuthor: book.author,
+                bookAge: book.age,
+                bookCategory: book.category,
+                bookDesk: book.desk,
+                bookId: book.id,
             });
-
-            text = text.split('\r\n'); */
+        } else {
 
             res.render('bookDeskUser.hbs', {
                 firstName: user.firstName,
@@ -214,40 +227,47 @@ app.get('/home', (_, res)=>{
 
 app.get('/profile', (_, res)=>{
 
-    pool.query('SELECT * FROM usersbooklist', (err, data)=>{
-        if(err) return console.log(err);
+    if(user.status) {
 
-        let listBook = [];
+        pool.query('SELECT * FROM cards', (err, data)=>{
+            if(err) return console.log(err);
 
-        for (let i = 0; i < data.length; i++) {
-            if(curDate == data[i].rentEnd){ // Проверка: если дата окончания аренды совападает с текущей, то удаляем книгу из списка
-                pool.query('DELETE FROM usersbooklist WHERE id=?', [data[i].id], err => {if(err) return console.log(err);})
+            return res.render('profileAdmin.hbs', {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                pathImgProfile: user.pathImg,
+                tableBook: data,
+            });
+        });
+    } else {
+        pool.query('SELECT * FROM usersbooklist', (err, data)=>{
+            if(err) return console.log(err);
+            let listBook = [];
+
+            for (let i = 0; i < data.length; i++) {
+                if(curDate == data[i].rentEnd){ // Проверка: если дата окончания аренды совападает с текущей, то удаляем книгу из списка
+                    pool.query('DELETE FROM usersbooklist WHERE id=?', [data[i].id], err => {if(err) return console.log(err);})
+                }
+    
+                if(user.id == data[i].idUser && curDate != data[i].rentEnd)  listBook.push({
+                    id: data[i].id,
+                    name: data[i].bookName,
+                    status: (data[i].status == 't') ? 'Куплено' : `${data[i].rentEnd}`,
+                    rentStart: (data[i].status == 'f') ? 'n' : data[i].rentStart,
+                });    
             }
-
-            if(user.id == data[i].idUser && curDate != data[i].rentEnd)  listBook.push({
-                id: data[i].id,
-                name: data[i].bookName,
-                status: (data[i].status == 't') ? 'Куплено' : `${data[i].rentEnd}`,
-                rentStart: (data[i].status == 'f') ? 'n' : data[i].rentStart,
-            });    
-        }
-
-        if(user.status) return res.render('profileAdmin.hbs', {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            pathImgProfile: user.pathImg,
-
-        });
-        else return res.render('profileUser.hbs', {
-            firstName: user.firstName,
-            lastName: user.lastName,
-            pathImgProfile: user.pathImg,
-            profileImg: user.pathImg,
-            login: user.login,
-            password: user.password,
-            tableBook: listBook,
-        });
-    })
+            return res.render('profileUser.hbs', {
+                firstName: user.firstName,
+                lastName: user.lastName,
+                pathImgProfile: user.pathImg,
+                profileImg: user.pathImg,
+                login: user.login,
+                password: user.password,
+                tableBook: listBook,
+            });
+    
+        })
+    }
 });
 
 app.post('/getInfoUser', uploadImg.single('userImg'), urlcodedParsers, (req, res)=>{
@@ -381,13 +401,23 @@ app.get('/openBook/:id', urlcodedParsers, (req, res)=>{
     }); 
 });
 
-app.post('/setFileBook/:id', uploadImg.array(), urlcodedParsers, (req, res)=>{
+app.post('/setFileBook/:id', uploadTxt.any(''), urlcodedParsers, (req, res)=>{
     if(!req.body) return res.sendStatus(400);
 
     pool.query('UPDATE cards SET pathText=?, pathImg=? WHERE id=?', [req.body.pathText, req.body.pathImg, req.params.id], (err)=>{
         if(err) return console.log(err);
     })
-})
+});
+
+app.post('/addBookDesk', urlcodedParsers, (req, res)=>{
+    if(!req.body) return res.statusCode(400);
+
+    pool.query('INSERT INTO cards (name, author, age, category) VALUES(?,?,?,?)', [req.body.nameBook, req.body.authorBook, req.body.ageBook, req.body.categoryBook], (err)=>{
+        if(err) return console.log(err);
+    });
+
+    res.redirect('/profile');
+});
 
 app.listen(3000, ()=>{
     console.log('Server start! URL: http://localhost:3000/');

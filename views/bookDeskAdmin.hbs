@@ -34,13 +34,13 @@
                     </div>
                    <form class="book-desk__aside__form" enctype="multipart/form-data" action="/setFileBook/{{bookId}}" method="post">
                         <div class="book-desk__aside__form__item">
-                            <label class="book-desk__aside__form__item__title" for="nameBook">Изображение: </label>
-                            <input type="file" id="nameBook" name="nameBook" class="book-desk__list__item__input" />{{bookName}}</input>
+                            <label class="book-desk__aside__form__item__title" for="pathImg">Изображение: </label>
+                            <input type="file" id="pathImg" name="pathImg" class="book-desk__list__item__input book-desk__list__item__input--size-18" />{{bookName}}</input>
                         </div>
 
                         <div class="book-desk__aside__form__item">
-                            <label class="book-desk__aside__form__item__title" for="nameBook">Файл .txt: </label>
-                            <input type="file" id="nameBook" name="nameBook" class="book-desk__list__item__input" />{{bookName}}</input>
+                            <label class="book-desk__aside__form__item__title" for="pathText">Файл .txt: </label>
+                            <input type="file" id="pathText" name="pathText" class="book-desk__list__item__input book-desk__list__item__input--size-18" />{{bookName}}</input>
                         </div>
 
                         <button class="btn-def" type="submit">Изменить</button>
@@ -50,23 +50,23 @@
                     <p class="book-desk__list__item"><h2 class="book-desk__list__item__title">Информация о книге</h2> <button class="btn-def" type="submit">Изменить</button></p>
                     <div class="book-desk__list__item book-desk__list__item--double">
                         <label for="nameBook">Название: </label>
-                        <input type="text" id="nameBook" name="nameBook" class="book-desk__list__item__input" />{{bookName}}</input>
+                        <input type="text" id="nameBook" name="nameBook" class="book-desk__list__item__input" value="{{bookName}}" />
                     </div>
                     <div class="book-desk__list__item book-desk__list__item--double">
                         <label for="authorBook">Автор: </label>
-                        <input type="text" id="authorBook" name="authorBook" class="book-desk__list__item__input" />{{bookAuthor}}</input>
+                        <input type="text" id="authorBook" name="authorBook" class="book-desk__list__item__input" value="{{bookAuthor}}" />
                     </div>
                     <div class="book-desk__list__item book-desk__list__item--double">
                         <label for="ageBook">Год: </label>
-                        <input type="text" id="ageBook" name="ageBook" class="book-desk__list__item__input" />{{bookAge}}</input>
+                        <input type="text" id="ageBook" name="ageBook" class="book-desk__list__item__input" value="{{bookAge}}" />
                     </div>
                     <div class="book-desk__list__item book-desk__list__item--double">
                         <label for="categoryBook">Категория: </label>
-                        <input type="text" id="categoryBook" name="categoryBook" class="book-desk__list__item__input" />{{bookCategory}}</input>
+                        <input type="text" id="categoryBook" name="categoryBook" class="book-desk__list__item__input" value="{{bookCategory}}" />
                     </div>
                     <div class="book-desk__list__item book-desk__list__item--double">
                         <label for="deakBook">Описание: </label>
-                        <input type="text" id="deakBook" name="deakBook" class="book-desk__list__item__input" />{{bookDesk}}</input>
+                        <textarea name="deakBook" id="deakBook" class="book-desk__list__item__textarea" >{{bookDesk}}</textarea>
                     </div>
                 </from>
             </div>

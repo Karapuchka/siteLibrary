@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/bookDesk.css">
+    <link rel="stylesheet" href="/css/profile.css">
     <link rel="shortcut icon" href="/img/favicon.webp" type="image/x-icon">
     <title>Профиль</title>
 </head>
@@ -25,7 +27,44 @@
                 </div>
             </div>
         </header>
-        <main class="main"></main>
+        <main class="main container profile">
+            <div class="profile__info">
+                <from action="/addBookDesk" method="post" class="book-desk__list">
+                    <p class="book-desk__list__item"><h2 class="book-desk__list__item__title">Информация о книге</h2></p>
+                    <div class="book-desk__list__item book-desk__list__item--double">
+                        <label for="nameBook">Название: </label>
+                        <input type="text" id="nameBook" name="nameBook" class="book-desk__list__item__input"/>
+                    </div>
+                    <div class="book-desk__list__item book-desk__list__item--double">
+                        <label for="authorBook">Автор: </label>
+                        <input type="text" id="authorBook" name="authorBook" class="book-desk__list__item__input"/>
+                    </div>
+                    <div class="book-desk__list__item book-desk__list__item--double">
+                        <label for="ageBook">Год: </label>
+                        <input type="text" id="ageBook" name="ageBook" class="book-desk__list__item__input"/>
+                    </div>
+                    <div class="book-desk__list__item book-desk__list__item--double">
+                        <label for="categoryBook">Категория: </label>
+                        <input type="text" id="categoryBook" name="categoryBook" class="book-desk__list__item__input"/>
+                    </div>
+                    <button type="submit" class="btn-def">Добавить</button>
+                </from>
+            </div>
+            <section class="profile__table">
+                <div class="profile__table__list">
+                    <div class="profile__table__list__item profile__table__list__item--title">
+                        <div class="profile__table__list__title__text profile__table__list__title__text--big">Наименование</div>
+                    </div>
+                    {{#each tableBook}}
+                        <form method="post" action="/getBookPage/{{this.id}}" data-rentStart="{{this.rentStart}}">
+                            <button class="profile__table__list__item" name="getBook">
+                                <div class="profile__table__list__item__text profile__table__list__item__text--big">{{this.name}}</div>
+                            </button>
+                        </form>
+                    {{/each}}
+                </div>
+            </section>
+        </main>
         <footer class="footer">
             <div class="container footer__container">
                 <span class="footer__text">Сайт разработан в образовательных целях</span>
